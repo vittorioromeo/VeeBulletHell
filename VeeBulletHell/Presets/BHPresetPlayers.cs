@@ -15,7 +15,7 @@ namespace VeeBulletHell.Presets
         {
             Timeline fireTimeline = new Timeline();
 
-            BHEntity result = BHPresetBase.Player(mGame, 4.ToUnits(), 2.ToUnits(), Assets.Animations["playerleft"], Assets.Animations["playerright"], Assets.Animations["playerstill"]);
+            BHEntity result = BHPresetBase.Player(mGame, 4.ToUnits(), 2.ToUnits(), Assets.GetAnimation("playerleft"), Assets.GetAnimation("playerright"), Assets.GetAnimation("playerstill"));
             result.Sprite = Assets.Tilesets["p_reimu"].GetSprite("s1", Assets.GetTexture("p_reimu"));
 
             fireTimeline.Action(() =>

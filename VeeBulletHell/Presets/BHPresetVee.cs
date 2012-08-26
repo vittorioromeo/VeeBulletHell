@@ -78,7 +78,7 @@ namespace VeeBulletHell.Presets
             result.Sprite = Assets.Tilesets[mTexture].GetSprite("s1", Assets.GetTexture("enemyfairy"));
             result.IsSpriteFixed = true;
             result.Position = mPosition;
-            result.Animation = Assets.Animations["enemyfairystill"];
+            result.Animation = Assets.GetAnimation("enemyfairystill");
 
             BHPresetTimelines.Kill(result, 400);
 
@@ -185,7 +185,7 @@ namespace VeeBulletHell.Presets
             result.Sprite = Assets.Tilesets["stg7enm"].GetSprite("s1", Assets.GetTexture("stg7enm"));
             result.IsSpriteFixed = true;
             result.Position = mPosition;
-            result.Animation = Assets.Animations["stg7enmstill"];
+            result.Animation = Assets.GetAnimation("stg7enmstill");
 
             // MOVEMENT TIMELINES
             Timeline startTimeline = new Timeline();

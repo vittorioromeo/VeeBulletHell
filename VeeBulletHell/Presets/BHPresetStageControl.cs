@@ -40,7 +40,7 @@ namespace VeeBulletHell.Presets
 
                         Action drawEvent = () => mGame.GameWindow.RenderWindow.Draw(temp);
                         drawEvents.Add(drawEvent);
-                        mGame.OnDrawAfterCamera += drawEvent;
+                        mGame.AddDrawAction(drawEvent);
                     }
                 }
             }
@@ -66,7 +66,7 @@ namespace VeeBulletHell.Presets
             cutInTimeline.Goto(mTimes: 200);
             cutInTimeline.Action(() =>
                                  {
-                                     foreach (Action drawEvent in drawEvents) mGame.OnDrawAfterCamera -= drawEvent;
+                                     foreach (Action drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
                                      cutInEntity.Destroy();
                                  });
 
@@ -95,11 +95,11 @@ namespace VeeBulletHell.Presets
 
             Action spellCardTextDrawEvent = () => mGame.GameWindow.RenderWindow.Draw(spellCardText);
             drawEvents.Add(spellCardTextDrawEvent);
-            mGame.OnDrawAfterCamera += spellCardTextDrawEvent;
+            mGame.AddDrawAction(spellCardTextDrawEvent);
 
             Action timeTextDrawEvent = () => mGame.GameWindow.RenderWindow.Draw(mTimeText);
             drawEvents.Add(timeTextDrawEvent);
-            mGame.OnDrawAfterCamera += timeTextDrawEvent;
+            mGame.AddDrawAction(timeTextDrawEvent);
 
             mStage.TimelinesUpdate.AddRange(mTimelines);
 
@@ -114,7 +114,7 @@ namespace VeeBulletHell.Presets
             spellCardTimeline.AddCommand(new GotoConditional(() => mTime < 1 || (int) mBoss.Parameters["health"] < 1, 0, -1));
             spellCardTimeline.Action(() =>
                                      {
-                                         foreach (Action drawEvent in drawEvents) mGame.OnDrawAfterCamera -= drawEvent;
+                                         foreach (Action drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
                                          foreach (Timeline timeline in mTimelines) timeline.Finished = true;
                                          ClearBullets(mGame, mStage);
                                          if (mOnEnd != null) mStage.TimelinesUpdate.Add(mOnEnd);

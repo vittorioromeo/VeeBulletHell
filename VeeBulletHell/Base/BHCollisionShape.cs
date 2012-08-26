@@ -140,7 +140,7 @@ namespace VeeBulletHell.Base
             {
                 BHCSCircle circle = (BHCSCircle) mShape;
 
-                for (int k = 0; k < Vertices.Count; k++)
+                for (var k = 0; k < Vertices.Count; k++)
                 {
                     Vector2i p1 = Vertices[k];
                     int nextIndex = k + 1;
