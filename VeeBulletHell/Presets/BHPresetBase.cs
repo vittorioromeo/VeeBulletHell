@@ -208,7 +208,7 @@ namespace VeeBulletHell.Presets
                                   {
                                       if (group == "enemy")
                                       {
-                                          entity.Sprite.Color = new Color((byte) Utils.RandomGenerator.GetNextInt(0, 255), (byte) Utils.RandomGenerator.GetNextInt(0, 255), (byte) Utils.RandomGenerator.GetNextInt(0, 255));
+                                          entity.Sprite.Color = new Color((byte)Utils.Random.Next(0, 255), (byte)Utils.Random.Next(0, 255), (byte)Utils.Random.Next(0, 255));
                                           entity.Parameters["health"] = (int) entity.Parameters["health"] - 1;
                                           result.Destroy();
                                           Assets.Sounds["se_damage00"].Play();

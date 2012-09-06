@@ -3,6 +3,7 @@ using System;
 using SFML.Window;
 using SFMLStart.Data;
 using SFMLStart.Utilities;
+using SFMLStart.Vectors;
 using VeeBulletHell.Base;
 
 #endregion
@@ -21,7 +22,7 @@ namespace VeeBulletHell.Data
         public static float GetAngleTowards(BHEntity mStart, BHEntity mEnd) { return (float) Math.Atan2(mEnd.Position.Y - mStart.Position.Y, mEnd.Position.X - mStart.Position.X)*57.3f; }
         public static Vector2i CalculateVelocity(float mDegrees, int mSpeed)
         {
-            Vector2f direction = Utils.Math.Angles.ToVectorDegrees(mDegrees);
+            var direction = Utils.Math.Angles.ToVectorDegrees(mDegrees);
             return new Vector2i((int) (direction.X*mSpeed), (int) (direction.Y*mSpeed));
         }
     }

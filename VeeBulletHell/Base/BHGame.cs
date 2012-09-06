@@ -31,8 +31,8 @@ namespace VeeBulletHell.Base
             OnUpdate += Run;
 
             OnDrawBeforeCamera += () => GameWindow.RenderWindow.Clear(Color.Black);
-            OnDrawAfterCamera += () => Manager.Draw();
-            OnDrawAfterCamera += DrawStuff;
+            AddDrawAction(() => Manager.Draw());
+            AddDrawAction(DrawStuff);
             OnDrawAfterDefault += () => GameWindow.RenderWindow.Draw(BorderSprite);
         }
 

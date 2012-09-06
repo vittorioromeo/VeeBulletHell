@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.Window;
 using SFMLStart.Data;
 using SFMLStart.Utilities;
+using SFMLStart.Vectors;
 using VeeBulletHell.Base;
 
 #endregion
@@ -42,16 +43,17 @@ namespace VeeBulletHell.Presets
         }
         public static void MovementLerp(BHEntity mEntity, Vector2i mPosition, int mSteps = 100)
         {
-            Vector2i startPosition = mEntity.Position;
-            Vector2i endPosition = mPosition;
+            var startPosition = new SSVector2I(mEntity.Position.X, mEntity.Position.Y);
+            var endPosition = new SSVector2I(mPosition.X, mPosition.Y);
 
-            Timeline timelineLerp = new Timeline();
+            var timelineLerp = new Timeline();
 
             for (int i = 0; i < mSteps; i++)
             {
                 float value = i/100f;
 
-                timelineLerp.Action(() => mEntity.Position = Utils.Math.Vectors.Lerp(startPosition, endPosition, value)); // LAgs with 10000 test it out
+                var lerp = Utils.Math.Vectors.Lerp(startPosition, endPosition, value);
+                timelineLerp.Action(() => mEntity.Position = new Vector2i(lerp.X, lerp.Y)); // LAgs with 10000 test it out
                 timelineLerp.Wait();
             }
 

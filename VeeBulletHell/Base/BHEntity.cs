@@ -6,6 +6,7 @@ using SFML.Window;
 using SFMLStart;
 using SFMLStart.Data;
 using SFMLStart.Utilities;
+using SFMLStart.Vectors;
 using VeeBulletHell.Data;
 
 #endregion
@@ -77,7 +78,7 @@ namespace VeeBulletHell.Base
             if (Animation != null)
             {
                 Animation.Update(mFrameTime);
-                Sprite.TextureRect = Animation.GetCurrentSubRect();
+                //Sprite.TextureRect = Animation.GetCurrentSubRect();
             }
 
             for (int i = TimelinesUpdate.Count - 1; i >= 0; i--)
@@ -117,7 +118,7 @@ namespace VeeBulletHell.Base
 
             if (Sprite != null)
             {
-                if (!IsSpriteFixed && (Velocity.X != 0 || Velocity.Y != 0)) Sprite.Rotation = Utils.Math.Vectors.ToAngleDegrees(new Vector2f(Velocity.X, Velocity.Y));
+                if (!IsSpriteFixed && (Velocity.X != 0 || Velocity.Y != 0)) Sprite.Rotation = new SSVector2F(Velocity.X, Velocity.Y).ToAngleDegrees();
                 Sprite.Rotation += SpriteRotation;
                 Sprite.Position = new Vector2f(Position.X.ToPixels() + SpriteOffset.X, Position.Y.ToPixels() + SpriteOffset.Y);
 

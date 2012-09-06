@@ -107,7 +107,7 @@ namespace VeeBulletHell.Presets
         public static void EnemyFairy1Attack(BHGame mGame, Vector2i mPosition, Color mColor, int mMultiplier = 1)
         {
             Assets.Sounds["tan01"].Play();
-            for (int i = 0; i < 10*mMultiplier; i++) BHPresetBullets.RoundFull(mGame, mPosition, Utils.RandomGenerator.GetNextInt(0, 360), Utils.RandomGenerator.GetNextInt(2.ToUnits(), 4.ToUnits())).Sprite.Color = mColor;
+            for (int i = 0; i < 10 * mMultiplier; i++) BHPresetBullets.RoundFull(mGame, mPosition, Utils.Random.Next(0, 360), Utils.Random.Next(2.ToUnits(), 4.ToUnits())).Sprite.Color = mColor;
         }
 
         public static BHEntity EnemyFairyBig1(BHGame mGame, Vector2i mPosition, string mTexture)
@@ -159,8 +159,8 @@ namespace VeeBulletHell.Presets
                                                                                                        {
                                                                                                            Assets.Sounds["kira01"].Play();
                                                                                                            BHEntity player = (BHEntity) mGame.Manager.EntityDictionary["player"][0];
-                                                                                                           float angle = BHUtils.GetAngleTowards(bullet, player) + Utils.RandomGenerator.GetNextInt(-8, 8);
-                                                                                                           Vector2f newVelocity = Utils.Math.Angles.ToVectorDegrees(angle) * 4.ToUnits();
+                                                                                                           float angle = BHUtils.GetAngleTowards(bullet, player) + Utils.Random.Next(-8, 8);
+                                                                                                           var newVelocity = Utils.Math.Angles.ToVectorDegrees(angle) * 4.ToUnits();
                                                                                                            bullet.Velocity = new Vector2i((int) newVelocity.X, (int) newVelocity.Y);
                                                                                                        }));
 
@@ -210,7 +210,7 @@ namespace VeeBulletHell.Presets
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack3(mGame, mBoss.Position)));
             spellcardTimeline.AddCommand(new Wait(25));
             spellcardTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss,
-                                                                                             new Vector2i(Utils.RandomGenerator.GetNextInt(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
+                                                                                             new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
             spellcardTimeline.AddCommand(new Goto(0));
 
             Timeline continueTimeline = new Timeline();
@@ -261,7 +261,7 @@ namespace VeeBulletHell.Presets
         public static void EnemyMidboss1SpellCardAttack3(BHGame mGame, Vector2i mPosition)
         {
             Assets.Sounds["tan02"].Play();
-            for (int i = 0; i < 85; i++) BHPresetBullets.Pellet(mGame, mPosition, Utils.RandomGenerator.GetNextInt(0, 360), Utils.RandomGenerator.GetNextInt(0.8f.ToUnits(), 3.5f.ToUnits()));
+            for (int i = 0; i < 85; i++) BHPresetBullets.Pellet(mGame, mPosition, Utils.Random.Next(0, 360), Utils.Random.Next(0.8f.ToUnits(), 3.5f.ToUnits()));
         }
 
         public static void EnemyMidboss1SpellCard2(BHGame mGame, BHEntity mBoss)
@@ -270,7 +270,7 @@ namespace VeeBulletHell.Presets
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack3(mGame, mBoss.Position)));
             spellcardTimeline.AddCommand(new Wait(21));
             spellcardTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss,
-                                                                                             new Vector2i(Utils.RandomGenerator.GetNextInt(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
+                                                                                             new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
             spellcardTimeline.AddCommand(new Goto(0));
 
             Timeline continueTimeline = new Timeline();
