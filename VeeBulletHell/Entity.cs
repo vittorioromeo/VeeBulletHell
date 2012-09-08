@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using SFMLStart;
 
 #endregion
+
 namespace VeeBulletHell
 {
     public class Entity

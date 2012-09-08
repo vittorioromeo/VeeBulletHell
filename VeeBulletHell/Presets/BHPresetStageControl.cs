@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.Window;
-using SFMLStart;
 using SFMLStart.Data;
 using SFMLStart.Utilities;
 using SFMLStart.Utilities.Timelines;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHPresetStageControl
@@ -17,10 +17,10 @@ namespace VeeBulletHell.Presets
         public static void CutIn(BHGame mGame, BHStage mStage, Texture mTexture, bool mText = false, string mBackgroundText = "spell attack",
                                  Vector2i mVelocity = default(Vector2i), Vector2i mOffset = default(Vector2i), int mLength = 100)
         {
-            Timeline cutInTimeline = new Timeline();
+            var cutInTimeline = new Timeline();
 
-            List<Text> texts = new List<Text>();
-            List<Action> drawEvents = new List<Action>();
+            var texts = new List<Text>();
+            var drawEvents = new List<Action>();
 
             if (mText)
             {
@@ -28,13 +28,13 @@ namespace VeeBulletHell.Presets
                 {
                     for (int i = 0; i < 35; i++)
                     {
-                        Text temp = new Text(mBackgroundText, Font.DefaultFont)
-                                    {
-                                        Position = new Vector2f(300 + (iX*84), (i*35) - 200),
-                                        Color = Color.White,
-                                        CharacterSize = 15,
-                                        Rotation = 25
-                                    };
+                        var temp = new Text(mBackgroundText, Font.DefaultFont)
+                                   {
+                                       Position = new Vector2f(300 + (iX*84), (i*35) - 200),
+                                       Color = Color.White,
+                                       CharacterSize = 15,
+                                       Rotation = 25
+                                   };
 
                         texts.Add(temp);
 
@@ -45,28 +45,28 @@ namespace VeeBulletHell.Presets
                 }
             }
 
-            Sprite cutInSprite = new Sprite(mTexture)
-                                 {
-                                     Color = new Color(255, 255, 255, 0)
-                                 };
+            var cutInSprite = new Sprite(mTexture)
+                              {
+                                  Color = new Color(255, 255, 255, 0)
+                              };
 
-            BHEntity cutInEntity = new BHEntity(mGame)
-                                   {
-                                       DrawOrder = 100000,
-                                       Sprite = cutInSprite,
-                                       Position = mGame.Center + mOffset
-                                   };
+            var cutInEntity = new BHEntity(mGame)
+                              {
+                                  DrawOrder = 100000,
+                                  Sprite = cutInSprite,
+                                  Position = mGame.Center + mOffset
+                              };
 
             BHPresetTimelines.Fade(cutInEntity, 0, true, 16);
             BHPresetTimelines.Fade(cutInEntity, mLength, false, 16);
 
-            cutInTimeline.Action(() => { foreach (Text text in texts) text.Position -= new Vector2f(3, 1); });
+            cutInTimeline.Action(() => { foreach (var text in texts) text.Position -= new Vector2f(3, 1); });
             cutInTimeline.Action(() => cutInEntity.Position += mVelocity);
             cutInTimeline.Wait();
             cutInTimeline.Goto(mTimes: 200);
             cutInTimeline.Action(() =>
                                  {
-                                     foreach (Action drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
+                                     foreach (var drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
                                      cutInEntity.Destroy();
                                  });
 
@@ -74,24 +74,24 @@ namespace VeeBulletHell.Presets
         }
         public static void SpellCard(BHGame mGame, BHStage mStage, BHEntity mBoss, string mSpellCardName, int mHealth, int mTime, int mScore, Timeline mOnEnd, params Timeline[] mTimelines)
         {
-            Timeline spellCardTimeline = new Timeline();
+            var spellCardTimeline = new Timeline();
 
             mBoss.Parameters["health"] = mHealth;
 
-            List<Action> drawEvents = new List<Action>();
+            var drawEvents = new List<Action>();
 
-            Text spellCardText = new Text(mSpellCardName, Font.DefaultFont)
-                                 {
-                                     Position = new Vector2f(32, 16),
-                                     Color = Color.White,
-                                     CharacterSize = 15,
-                                 };
-            Text mTimeText = new Text(mTime.ToString(), Font.DefaultFont)
-                             {
-                                 Position = new Vector2f(384, 16),
-                                 Color = Color.White,
-                                 CharacterSize = 15
-                             };
+            var spellCardText = new Text(mSpellCardName, Font.DefaultFont)
+                                {
+                                    Position = new Vector2f(32, 16),
+                                    Color = Color.White,
+                                    CharacterSize = 15,
+                                };
+            var mTimeText = new Text(mTime.ToString(), Font.DefaultFont)
+                            {
+                                Position = new Vector2f(384, 16),
+                                Color = Color.White,
+                                CharacterSize = 15
+                            };
 
             Action spellCardTextDrawEvent = () => mGame.GameWindow.RenderWindow.Draw(spellCardText);
             drawEvents.Add(spellCardTextDrawEvent);
@@ -103,7 +103,7 @@ namespace VeeBulletHell.Presets
 
             mStage.TimelinesUpdate.AddRange(mTimelines);
 
-            Assets.Sounds["cat00"].Play();
+            Assets.GetSound("cat00").Play();
 
             spellCardTimeline.Action(() =>
                                      {
@@ -114,8 +114,8 @@ namespace VeeBulletHell.Presets
             spellCardTimeline.AddCommand(new GotoConditional(() => mTime < 1 || (int) mBoss.Parameters["health"] < 1, 0, -1));
             spellCardTimeline.Action(() =>
                                      {
-                                         foreach (Action drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
-                                         foreach (Timeline timeline in mTimelines) timeline.Finished = true;
+                                         foreach (var drawEvent in drawEvents) mGame.RemoveDrawAction(drawEvent);
+                                         foreach (var timeline in mTimelines) timeline.Finished = true;
                                          ClearBullets(mGame, mStage);
                                          if (mOnEnd != null) mStage.TimelinesUpdate.Add(mOnEnd);
                                      });

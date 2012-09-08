@@ -6,6 +6,7 @@ using VeeBulletHell.Base;
 using VeeBulletHell.Data;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHPresetBullets

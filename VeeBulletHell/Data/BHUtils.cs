@@ -1,12 +1,11 @@
 ﻿#region
 using System;
 using SFML.Window;
-using SFMLStart.Data;
 using SFMLStart.Utilities;
-using SFMLStart.Vectors;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell.Data
 {
     public static class BHUtils

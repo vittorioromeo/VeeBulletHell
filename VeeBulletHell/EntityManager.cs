@@ -4,6 +4,7 @@ using System.Diagnostics;
 using SFMLStart;
 
 #endregion
+
 namespace VeeBulletHell
 {
     public class EntityManager
@@ -20,7 +21,7 @@ namespace VeeBulletHell
             EntitiesToDrawSorted = new List<Entity>();
 
             EntityDictionary = new Dictionary<string, List<Entity>>();
-            foreach (string group in mGroups) EntityDictionary.Add(group, new List<Entity>());
+            foreach (var group in mGroups) EntityDictionary.Add(group, new List<Entity>());
         }
 
         public Dictionary<string, List<Entity>> EntityDictionary { get; set; }
@@ -45,12 +46,12 @@ namespace VeeBulletHell
             }
             EntitiesToDrawSorted.Add(mEntity);
 
-                foreach (string group in mEntity.Groups)
-                {
-                    Debug.Assert(!EntityDictionary[group].Contains(mEntity));
-                    EntityDictionary[group].Add(mEntity);
-                }
-            
+            foreach (var group in mEntity.Groups)
+            {
+                Debug.Assert(!EntityDictionary[group].Contains(mEntity));
+                EntityDictionary[group].Add(mEntity);
+            }
+
 
             _isSortNeeded = true;
         }
@@ -65,12 +66,11 @@ namespace VeeBulletHell
             EntitiesToUpdate.Remove(mEntity);
             EntitiesToDrawSorted.Remove(mEntity);
 
-                foreach (string group in mEntity.Groups)
-                {
-                    Debug.Assert(EntityDictionary[group].Contains(mEntity));
-                    EntityDictionary[group].Remove(mEntity);
-                }
-            
+            foreach (var group in mEntity.Groups)
+            {
+                Debug.Assert(EntityDictionary[group].Contains(mEntity));
+                EntityDictionary[group].Remove(mEntity);
+            }
         }
 
         public virtual void Update(float mFrameTime)
@@ -84,10 +84,9 @@ namespace VeeBulletHell
 
         public virtual void Draw()
         {
+            if (_isSortNeeded) EntitiesToDrawSorted.Sort((p1, p2) => p1.DrawOrder.CompareTo(p2.DrawOrder));
+            _isSortNeeded = false;
 
-                if (_isSortNeeded) EntitiesToDrawSorted.Sort((p1, p2) => p1.DrawOrder.CompareTo(p2.DrawOrder));
-                _isSortNeeded = false;
-            
 
             for (int i = 0; i < EntitiesToDrawSorted.Count; i++) EntitiesToDrawSorted[i].Draw();
         }

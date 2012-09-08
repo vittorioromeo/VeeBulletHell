@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SFMLStart.Utilities;
 
 #endregion
+
 namespace VeeBulletHell.Base
 {
     public class BHStage

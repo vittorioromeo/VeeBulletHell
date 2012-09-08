@@ -8,13 +8,14 @@ using VeeBulletHell.Base;
 using VeeBulletHell.Data;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHPresetBase
     {
         public static BHEntity Bullet(BHGame mGame, Vector2i mPosition = default(Vector2i), float mAngle = 0, int mSpeed = 0, long mRadius = 0)
         {
-            BHEntity result = new BHEntity(mGame, "deadlytoplayer", "bullet") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
+            var result = new BHEntity(mGame, "deadlytoplayer", "bullet") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
             result.CollisionShape = new BHCSCircle(result, mRadius*mRadius);
 
             result.OnOutOfBounds += BHPresetOutOfBounds.Destroy;
@@ -23,17 +24,17 @@ namespace VeeBulletHell.Presets
         }
         public static BHEntity Player(BHGame mGame, int mSpeedNormal, int mSpeedFocus, Animation mAnimationLeft, Animation mAnimationRight, Animation mAnimationStill)
         {
-            Timeline updateTimeline = new Timeline();
-            Timeline drawTimeline = new Timeline();
+            var updateTimeline = new Timeline();
+            var drawTimeline = new Timeline();
 
-            Sprite hitboxSprite = new Sprite(Assets.GetTexture("p_hitbox"));
+            var hitboxSprite = new Sprite(Assets.GetTexture("p_hitbox"));
 
-            BHEntity result = new BHEntity(mGame, "character", "player") {DrawOrder = -10000, IsSpriteFixed = true, BoundsOffset = 10.ToUnits(), Animation = mAnimationStill};
+            var result = new BHEntity(mGame, "character", "player") {DrawOrder = -10000, IsSpriteFixed = true, BoundsOffset = 10.ToUnits(), Animation = mAnimationStill};
             result.CollisionShape = new BHCSPoint(result);
             result.CollisionAgainstGroups.Add("deadlytoplayer");
 
             result.OnOutOfBounds += BHPresetOutOfBounds.Stop;
-            result.OnCollision += (entity, group) => { if (group == "deadlytoplayer") Assets.Sounds["pldead00"].Play(); };
+            result.OnCollision += (entity, group) => { if (group == "deadlytoplayer") Assets.GetSound("pldead00").Play(); };
 
             updateTimeline.Action(() =>
                                   {
@@ -70,13 +71,13 @@ namespace VeeBulletHell.Presets
         public static BHEntity Laser(BHGame mGame, Sprite mSprite, Vector2i mPosition = default(Vector2i), float mAngle = 0, int mSpeed = 0,
                                      long mRadius = 0, int mLength = 0, bool mGrow = false, int mGrowSpeed = 0, bool mPrimed = false, int mPrimeTime = 50, int mPrimeSurviveTime = 50)
         {
-            Timeline primeTimeline = new Timeline();
-            Timeline growTimeline = new Timeline();
-            Timeline drawTimeline = new Timeline();
+            var primeTimeline = new Timeline();
+            var growTimeline = new Timeline();
+            var drawTimeline = new Timeline();
 
             long radius = (mRadius/2)*(mRadius/2);
 
-            BHEntity result = new BHEntity(mGame, "laser") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
+            var result = new BHEntity(mGame, "laser") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
             if (!mPrimed) result.AddGroup("deadlytoplayer");
 
             result.CollisionShape = mGrow ? new BHCSLine(result, mAngle, 0, radius) : new BHCSLine(result, mAngle, mLength, radius);
@@ -106,7 +107,7 @@ namespace VeeBulletHell.Presets
 
             growTimeline.Action(() =>
                                 {
-                                    BHCSLine lineShape = (BHCSLine) result.CollisionShape;
+                                    var lineShape = (BHCSLine) result.CollisionShape;
                                     if (lineShape.Length < mLength)
                                     {
                                         lineShape.Length += mGrowSpeed;
@@ -123,7 +124,7 @@ namespace VeeBulletHell.Presets
 
             drawTimeline.Action(() =>
                                 {
-                                    BHCSLine lineShape = (BHCSLine) result.CollisionShape;
+                                    var lineShape = (BHCSLine) result.CollisionShape;
                                     result.Sprite.Rotation = lineShape.Degrees;
                                     result.Sprite.Transform.Scale(lineShape.Length.ToPixels(), height);
                                     result.Sprite.Origin = new Vector2f(0, result.Sprite.Origin.Y);
@@ -141,9 +142,9 @@ namespace VeeBulletHell.Presets
         }
         public static BHEntity Enemy(BHGame mGame, int mRadius, int mHealth)
         {
-            Timeline deathTimeline = new Timeline();
+            var deathTimeline = new Timeline();
 
-            BHEntity result = new BHEntity(mGame, "enemy", "character");
+            var result = new BHEntity(mGame, "enemy", "character");
             result.CollisionShape = new BHCSCircle(result, mRadius*mRadius);
             result.Parameters["health"] = mHealth;
 
@@ -152,7 +153,7 @@ namespace VeeBulletHell.Presets
                                      if ((int) result.Parameters["health"] <= 0)
                                      {
                                          result.Destroy();
-                                         Assets.Sounds["se_enep00"].Play();
+                                         Assets.GetSound("se_enep00").Play();
                                      }
                                  });
             deathTimeline.Wait();
@@ -164,9 +165,9 @@ namespace VeeBulletHell.Presets
         }
         public static BHEntity Boss(BHGame mGame, int mRadius, int mHealth)
         {
-            Timeline deathTimeline = new Timeline();
+            var deathTimeline = new Timeline();
 
-            BHEntity result = new BHEntity(mGame, "boss", "enemy", "character");
+            var result = new BHEntity(mGame, "boss", "enemy", "character");
             result.CollisionShape = new BHCSCircle(result, mRadius*mRadius);
             result.Parameters["health"] = mHealth;
 
@@ -181,14 +182,14 @@ namespace VeeBulletHell.Presets
 
         public static BHEntity Polygon(BHGame mGame, List<Vector2i> mVertices)
         {
-            Timeline drawTimeline = new Timeline();
+            var drawTimeline = new Timeline();
 
-            BHEntity result = new BHEntity(mGame, "deadlytoplayer") {Position = mGame.Center};
+            var result = new BHEntity(mGame, "deadlytoplayer") {Position = mGame.Center};
             result.CollisionShape = new BHCSPolygon(result, mVertices.ToArray());
 
             drawTimeline.Action(() =>
                                 {
-                                    BHCSPolygon shape = (BHCSPolygon) result.CollisionShape;
+                                    var shape = (BHCSPolygon) result.CollisionShape;
                                     //foreach (Vector2i vertex in shape.Vertices) mGame.WindowManager.RenderWindow.Draw(new CircleShape(new Vector2f(vertex.X.ToPixels(), vertex.Y.ToPixels()), 2, Color.Red));
                                 });
             drawTimeline.Wait();
@@ -200,7 +201,7 @@ namespace VeeBulletHell.Presets
         }
         public static BHEntity PlayerBullet(BHGame mGame, Vector2i mPosition = default(Vector2i), float mAngle = 0, int mSpeed = 0)
         {
-            BHEntity result = new BHEntity(mGame, "playerbullet") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
+            var result = new BHEntity(mGame, "playerbullet") {Position = mPosition, Velocity = BHUtils.CalculateVelocity(mAngle, mSpeed)};
             result.CollisionShape = new BHCSPoint(result);
             result.CollisionAgainstGroups.Add("enemy");
 
@@ -208,10 +209,10 @@ namespace VeeBulletHell.Presets
                                   {
                                       if (group == "enemy")
                                       {
-                                          entity.Sprite.Color = new Color((byte)Utils.Random.Next(0, 255), (byte)Utils.Random.Next(0, 255), (byte)Utils.Random.Next(0, 255));
+                                          entity.Sprite.Color = new Color((byte) Utils.Random.Next(0, 255), (byte) Utils.Random.Next(0, 255), (byte) Utils.Random.Next(0, 255));
                                           entity.Parameters["health"] = (int) entity.Parameters["health"] - 1;
                                           result.Destroy();
-                                          Assets.Sounds["se_damage00"].Play();
+                                          Assets.GetSound("se_damage00").Play();
                                       }
                                   };
 

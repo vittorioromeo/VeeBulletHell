@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using SFML.Window;
-using SFMLStart.Data;
 using SFMLStart.Utilities;
 using SFMLStart.Vectors;
 using VeeBulletHell.Data;
 
 #endregion
+
 namespace VeeBulletHell.Base
 {
     public abstract class BHCollisionShape
@@ -46,7 +46,7 @@ namespace VeeBulletHell.Base
             }
             if (mShape is BHCSCircle)
             {
-                BHCSCircle circle = (BHCSCircle) mShape;
+                var circle = (BHCSCircle) mShape;
 
                 double dx = Parent.Position.X - mShape.Parent.Position.X;
                 double dy = Parent.Position.Y - mShape.Parent.Position.Y;
@@ -78,7 +78,7 @@ namespace VeeBulletHell.Base
             {
                 Vector2i p1 = Parent.Position;
                 var angleVector = Utils.Math.Vectors.OrbitDegrees(new SSVector2F(p1.X, p1.Y), Degrees, Length);
-                Vector2i p2 = new Vector2i((int) angleVector.X, (int) angleVector.Y);
+                var p2 = new Vector2i((int) angleVector.X, (int) angleVector.Y);
                 Vector2i p3 = mShape.Parent.Position;
 
                 double xDelta = p2.X - p1.X;
@@ -139,7 +139,7 @@ namespace VeeBulletHell.Base
             }
             if (mShape is BHCSCircle)
             {
-                BHCSCircle circle = (BHCSCircle) mShape;
+                var circle = (BHCSCircle) mShape;
 
                 for (var k = 0; k < Vertices.Count; k++)
                 {

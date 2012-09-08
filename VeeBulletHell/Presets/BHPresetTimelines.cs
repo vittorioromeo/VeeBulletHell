@@ -1,12 +1,12 @@
 ﻿#region
 using SFML.Graphics;
 using SFML.Window;
-using SFMLStart.Data;
 using SFMLStart.Utilities;
 using SFMLStart.Vectors;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHPresetTimelines
@@ -16,7 +16,7 @@ namespace VeeBulletHell.Presets
             int value = mSpeedMultiplier;
             if (!mFadeIn) value *= -1;
 
-            Timeline fadeTimeline = new Timeline();
+            var fadeTimeline = new Timeline();
             fadeTimeline.Wait(mDelay);
             fadeTimeline.Action(() =>
                                 {
@@ -36,7 +36,7 @@ namespace VeeBulletHell.Presets
         }
         public static void Kill(BHEntity mEntity, int mFrames)
         {
-            Timeline timelineKill = new Timeline();
+            var timelineKill = new Timeline();
             timelineKill.Wait(mFrames);
             timelineKill.Action(mEntity.Destroy);
             mEntity.TimelinesUpdate.Add(timelineKill);

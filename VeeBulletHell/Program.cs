@@ -5,6 +5,7 @@ using SFMLStart.Data;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell
 {
     public class Program

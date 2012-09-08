@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SFML.Window;
-using SFMLStart.Data;
 using SFMLStart.Utilities;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell.BeatTapper
 {
     public class BHBeatTapper
@@ -39,7 +39,7 @@ namespace VeeBulletHell.BeatTapper
             result += "Timeline timeline = new Timeline();" + Environment.NewLine;
             result += Environment.NewLine;
 
-            foreach (BHBTTap tap in Taps)
+            foreach (var tap in Taps)
             {
                 result += string.Format("timeline.AddCommand(new Wait({0}));", tap.Time);
                 result += string.Format("timeline.AddCommand(new Do( () => TapResult(\"{0}\") ));", tap.Key);

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using SFML.Graphics;
 using SFML.Window;
-using SFMLStart;
-using SFMLStart.Data;
 using SFMLStart.Utilities;
 using SFMLStart.Vectors;
 using VeeBulletHell.Data;
 
 #endregion
+
 namespace VeeBulletHell.Base
 {
     public class BHEntity : Entity
@@ -18,6 +17,7 @@ namespace VeeBulletHell.Base
         public delegate void CollisionEvent(BHEntity mEntity, string mGroup);
         public delegate void OutOfBoundsEvent(BHEntity mEntity, Vector2i mDirection, Rectangle mBounds, int mBoundsOffset);
         #endregion
+
         private Sprite _sprite;
 
         public BHEntity(BHGame mGame, params string[] mGroups)
@@ -87,8 +87,8 @@ namespace VeeBulletHell.Base
                 timeline.Update(mFrameTime);
             }
 
-            foreach (BHEntity entity in CollisionEntities) if (CollisionShape.IsColliding(entity.CollisionShape)) InvokeOnCollision(entity, "");
-            foreach (string group in CollisionAgainstGroups) foreach (BHEntity entity in Manager.EntityDictionary[group]) if (CollisionShape.IsColliding(entity.CollisionShape)) InvokeOnCollision(entity, group);
+            foreach (var entity in CollisionEntities) if (CollisionShape.IsColliding(entity.CollisionShape)) InvokeOnCollision(entity, "");
+            foreach (var group in CollisionAgainstGroups) foreach (BHEntity entity in Manager.EntityDictionary[group]) if (CollisionShape.IsColliding(entity.CollisionShape)) InvokeOnCollision(entity, group);
 
             if (IsIgnoringBounds) return;
             if (Position.X < Game.Bounds.X + BoundsOffset) InvokeOnOutOfBounds(new Vector2i(-1, 0));

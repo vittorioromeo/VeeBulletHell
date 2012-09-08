@@ -4,6 +4,7 @@ using SFML.Window;
 using VeeBulletHell.Base;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHPresetOutOfBounds

@@ -8,20 +8,21 @@ using VeeBulletHell.Base;
 using VeeBulletHell.Data;
 
 #endregion
+
 namespace VeeBulletHell.Presets
 {
     public static class BHTestScript
     {
         public static BHStage TestScriptStage2(BHGame mGame)
         {
-            BHStage result = new BHStage();
-            Timeline stageTimeline = new Timeline();
+            var result = new BHStage();
+            var stageTimeline = new Timeline();
 
             // FIRST FAIRY WAVE
             for (int i = 0; i < 200; i++)
             {
                 int i1 = i;
-                Vector2i position = new Vector2i();
+                var position = new Vector2i();
                 if (i%2 == 0) position = new Vector2i(mGame.Bounds.Right, 0);
 
                 stageTimeline.Wait(5);
@@ -44,7 +45,7 @@ namespace VeeBulletHell.Presets
             for (int i = 0; i < 50; i++)
             {
                 int i1 = i;
-                Vector2i position = new Vector2i();
+                var position = new Vector2i();
                 if (i%2 == 0) position = new Vector2i(mGame.Bounds.Right, 0);
 
                 stageTimeline.Wait(8);
@@ -75,7 +76,7 @@ namespace VeeBulletHell.Presets
             int s = 2;
 
             BHEntity result = BHPresetBase.Enemy(mGame, 20.ToUnits(), 2);
-            result.Sprite = Assets.Tilesets[mTexture].GetSprite("s1", Assets.GetTexture("enemyfairy"));
+            result.Sprite = Assets.GetTileset(mTexture).GetSprite("s1", Assets.GetTexture("enemyfairy"));
             result.IsSpriteFixed = true;
             result.Position = mPosition;
             result.Animation = Assets.GetAnimation("enemyfairystill");
@@ -83,7 +84,7 @@ namespace VeeBulletHell.Presets
             BHPresetTimelines.Kill(result, 400);
 
             // MOVEMENT TIMELINES
-            Timeline timelineMovement = new Timeline();
+            var timelineMovement = new Timeline();
             for (int i = 0; i < 150; i++)
             {
                 int i1 = i;
@@ -93,7 +94,7 @@ namespace VeeBulletHell.Presets
             // -------------------
 
             // ATTACK TIMELINES
-            Timeline timelineAttack = new Timeline();
+            var timelineAttack = new Timeline();
             timelineAttack.AddCommand(new Do(() => EnemyFairy1Attack(mGame, result.Position, new Color(135, 135, 230, 255), mMultiplier)));
             timelineAttack.AddCommand(new Wait(25));
             timelineAttack.AddCommand(new Goto(0, 8));
@@ -106,8 +107,8 @@ namespace VeeBulletHell.Presets
         }
         public static void EnemyFairy1Attack(BHGame mGame, Vector2i mPosition, Color mColor, int mMultiplier = 1)
         {
-            Assets.Sounds["tan01"].Play();
-            for (int i = 0; i < 10 * mMultiplier; i++) BHPresetBullets.RoundFull(mGame, mPosition, Utils.Random.Next(0, 360), Utils.Random.Next(2.ToUnits(), 4.ToUnits())).Sprite.Color = mColor;
+            Assets.GetSound("tan01").Play();
+            for (int i = 0; i < 10*mMultiplier; i++) BHPresetBullets.RoundFull(mGame, mPosition, Utils.Random.Next(0, 360), Utils.Random.Next(2.ToUnits(), 4.ToUnits())).Sprite.Color = mColor;
         }
 
         public static BHEntity EnemyFairyBig1(BHGame mGame, Vector2i mPosition, string mTexture)
@@ -121,7 +122,7 @@ namespace VeeBulletHell.Presets
             BHPresetTimelines.Kill(result, 900);
 
             // MOVEMENT TIMELINES
-            Timeline timelineMovement = new Timeline();
+            var timelineMovement = new Timeline();
             timelineMovement.Action(() => result.Velocity = new Vector2i(0, 150));
             timelineMovement.Wait(100);
             timelineMovement.Action(() => result.Velocity = new Vector2i(0, 0));
@@ -130,43 +131,43 @@ namespace VeeBulletHell.Presets
             // -------------------
 
             // ATTACK TIMELINES
-            Timeline timelineAttack = new Timeline();
+            var timelineAttack = new Timeline();
             timelineAttack.Parameters["angle"] = 0;
             timelineAttack.AddCommand(new Do(() =>
-                                                     {
-                                                         int angle = (int) timelineAttack.Parameters["angle"];
-                                                         for (int i = 0; i < 24; i++)
-                                                         {
-                                                             BHPresetBullets.Glow1(mGame, result.Position, (360/24)*i + angle, 5.ToUnits());
-                                                             BHPresetBullets.Glow1(mGame, result.Position, (360/24)*i - angle, 5.ToUnits());
-                                                         }
-                                                         timelineAttack.Parameters["angle"] = angle + 20;
-                                                     }));
+                                             {
+                                                 var angle = (int) timelineAttack.Parameters["angle"];
+                                                 for (int i = 0; i < 24; i++)
+                                                 {
+                                                     BHPresetBullets.Glow1(mGame, result.Position, (360/24)*i + angle, 5.ToUnits());
+                                                     BHPresetBullets.Glow1(mGame, result.Position, (360/24)*i - angle, 5.ToUnits());
+                                                 }
+                                                 timelineAttack.Parameters["angle"] = angle + 20;
+                                             }));
             timelineAttack.AddCommand(new Wait(25));
             timelineAttack.AddCommand(new Goto(0, 50));
 
-            Timeline timelineAttack2 = new Timeline();
+            var timelineAttack2 = new Timeline();
             timelineAttack2.AddCommand(new Do(() =>
-                                                      {
-                                                          Assets.Sounds["tan00"].Play();
-                                                          for (int i = 0; i < 16; i++)
-                                                          {
-                                                              Timeline bulletTimeline = new Timeline();
-                                                              BHEntity bullet = BHPresetBullets.RoundSmall(mGame, result.Position, (360/16)*i, 1.ToUnits());
+                                              {
+                                                  Assets.GetSound("tan00").Play();
+                                                  for (int i = 0; i < 16; i++)
+                                                  {
+                                                      var bulletTimeline = new Timeline();
+                                                      BHEntity bullet = BHPresetBullets.RoundSmall(mGame, result.Position, (360/16)*i, 1.ToUnits());
 
-                                                              bulletTimeline.AddCommand(new Wait(50));
-                                                              bulletTimeline.AddCommand(new Do(() =>
-                                                                                                       {
-                                                                                                           Assets.Sounds["kira01"].Play();
-                                                                                                           BHEntity player = (BHEntity) mGame.Manager.EntityDictionary["player"][0];
-                                                                                                           float angle = BHUtils.GetAngleTowards(bullet, player) + Utils.Random.Next(-8, 8);
-                                                                                                           var newVelocity = Utils.Math.Angles.ToVectorDegrees(angle) * 4.ToUnits();
-                                                                                                           bullet.Velocity = new Vector2i((int) newVelocity.X, (int) newVelocity.Y);
-                                                                                                       }));
+                                                      bulletTimeline.AddCommand(new Wait(50));
+                                                      bulletTimeline.AddCommand(new Do(() =>
+                                                                                       {
+                                                                                           Assets.GetSound("kira01").Play();
+                                                                                           var player = (BHEntity) mGame.Manager.EntityDictionary["player"][0];
+                                                                                           float angle = BHUtils.GetAngleTowards(bullet, player) + Utils.Random.Next(-8, 8);
+                                                                                           var newVelocity = Utils.Math.Angles.ToVectorDegrees(angle)*4.ToUnits();
+                                                                                           bullet.Velocity = new Vector2i((int) newVelocity.X, (int) newVelocity.Y);
+                                                                                       }));
 
-                                                              bullet.TimelinesUpdate.Add(bulletTimeline);
-                                                          }
-                                                      }));
+                                                      bullet.TimelinesUpdate.Add(bulletTimeline);
+                                                  }
+                                              }));
             timelineAttack2.AddCommand(new Wait(50));
             timelineAttack2.AddCommand(new Goto(0, 50));
             // -------------------
@@ -182,13 +183,13 @@ namespace VeeBulletHell.Presets
         {
             BHEntity result = BHPresetBase.Boss(mGame, 30.ToUnits(), 100);
 
-            result.Sprite = Assets.Tilesets["stg7enm"].GetSprite("s1", Assets.GetTexture("stg7enm"));
+            result.Sprite = Assets.GetTileset("stg7enm").GetSprite("s1", Assets.GetTexture("stg7enm"));
             result.IsSpriteFixed = true;
             result.Position = mPosition;
             result.Animation = Assets.GetAnimation("stg7enmstill");
 
             // MOVEMENT TIMELINES
-            Timeline startTimeline = new Timeline();
+            var startTimeline = new Timeline();
             startTimeline.AddCommand(new Do(() => result.Velocity = new Vector2i(0, 0.7f.ToUnits())));
             startTimeline.AddCommand(new Wait(210));
             startTimeline.AddCommand(new Do(() => result.Velocity = new Vector2i(0, 0)));
@@ -202,7 +203,7 @@ namespace VeeBulletHell.Presets
         }
         public static void EnemyMidboss1SpellCard1(BHGame mGame, BHEntity mBoss)
         {
-            Timeline spellcardTimeline = new Timeline();
+            var spellcardTimeline = new Timeline();
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack1(mGame, mBoss.Position)));
             spellcardTimeline.AddCommand(new Wait(145));
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack2(mGame, mBoss.Position)));
@@ -210,10 +211,10 @@ namespace VeeBulletHell.Presets
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack3(mGame, mBoss.Position)));
             spellcardTimeline.AddCommand(new Wait(25));
             spellcardTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss,
-                                                                                             new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
+                                                                                     new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
             spellcardTimeline.AddCommand(new Goto(0));
 
-            Timeline continueTimeline = new Timeline();
+            var continueTimeline = new Timeline();
             continueTimeline.AddCommand(new Wait(25));
             continueTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss, new Vector2i(mGame.Center.X, mBoss.Position.Y))));
             continueTimeline.AddCommand(new Wait(95));
@@ -225,7 +226,7 @@ namespace VeeBulletHell.Presets
         }
         public static void EnemyMidboss1SpellCardAttack1(BHGame mGame, Vector2i mPosition)
         {
-            Assets.Sounds["lazer00"].Play();
+            Assets.GetSound("lazer00").Play();
 
             for (int i = 0; i < 60; i++)
             {
@@ -233,14 +234,14 @@ namespace VeeBulletHell.Presets
                                                   new Sprite(Assets.GetTexture("b_laser")),
                                                   mPosition, (360/12)*i + i, 0.5f.ToUnits() + i*10, 4.ToUnits(), 30.ToUnits() + (i*0.1f.ToUnits()), true, 250);
 
-                Timeline laserTimeline = new Timeline();
+                var laserTimeline = new Timeline();
                 int i1 = i;
                 laserTimeline.AddCommand(new Do(() =>
-                                                        {
-                                                            BHCSLine lineShape = (BHCSLine) ent.CollisionShape;
-                                                            lineShape.Degrees += i1/20f;
-                                                            lineShape.Length += 0.7f.ToUnits();
-                                                        }));
+                                                {
+                                                    var lineShape = (BHCSLine) ent.CollisionShape;
+                                                    lineShape.Degrees += i1/20f;
+                                                    lineShape.Length += 0.7f.ToUnits();
+                                                }));
                 laserTimeline.AddCommand(new Wait(1));
                 laserTimeline.AddCommand(new Goto(0, 145));
 
@@ -249,7 +250,7 @@ namespace VeeBulletHell.Presets
         }
         public static void EnemyMidboss1SpellCardAttack2(BHGame mGame, Vector2i mPosition)
         {
-            Assets.Sounds["lazer00"].Play();
+            Assets.GetSound("lazer00").Play();
 
             for (int i = 1; i < 12; i++)
             {
@@ -260,25 +261,25 @@ namespace VeeBulletHell.Presets
         }
         public static void EnemyMidboss1SpellCardAttack3(BHGame mGame, Vector2i mPosition)
         {
-            Assets.Sounds["tan02"].Play();
+            Assets.GetSound("tan02").Play();
             for (int i = 0; i < 85; i++) BHPresetBullets.Pellet(mGame, mPosition, Utils.Random.Next(0, 360), Utils.Random.Next(0.8f.ToUnits(), 3.5f.ToUnits()));
         }
 
         public static void EnemyMidboss1SpellCard2(BHGame mGame, BHEntity mBoss)
         {
-            Timeline spellcardTimeline = new Timeline();
+            var spellcardTimeline = new Timeline();
             spellcardTimeline.AddCommand(new Do(() => EnemyMidboss1SpellCardAttack3(mGame, mBoss.Position)));
             spellcardTimeline.AddCommand(new Wait(21));
             spellcardTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss,
-                                                                                             new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
+                                                                                     new Vector2i(Utils.Random.Next(mGame.Bounds.Left + 5.ToUnits(), mGame.Bounds.Right - 5.ToUnits()), mBoss.Position.Y))));
             spellcardTimeline.AddCommand(new Goto(0));
 
-            Timeline continueTimeline = new Timeline();
+            var continueTimeline = new Timeline();
             continueTimeline.AddCommand(new Wait(25));
             continueTimeline.AddCommand(new Do(() => BHPresetTimelines.MovementLerp(mBoss, new Vector2i(mGame.Center.X, mBoss.Position.Y))));
             continueTimeline.AddCommand(new Wait(75));
             continueTimeline.AddCommand(new Do(mBoss.Destroy));
-            continueTimeline.AddCommand(new Do(() => Assets.Sounds["enep01"].Play()));
+            continueTimeline.AddCommand(new Do(() => Assets.GetSound("enep01").Play()));
 
             BHPresetStageControl.CutIn(mGame, mGame.CurrentStage, Assets.GetTexture("face07bs"), true, "u mad bro?",
                                        new Vector2i(6.ToUnits(), 1.ToUnits()), new Vector2i(-10.ToUnits(), 5.ToUnits()), 150);
